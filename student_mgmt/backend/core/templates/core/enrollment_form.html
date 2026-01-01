@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="glass-card fade-in">
+            <h3 class="mb-4">{{ action }}</h3>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    <select name="{{ field.name }}" class="form-select" {% if field.field.required %}required{% endif
+                        %}>
+                        {% for value, text in field.field.choices %}
+                        <option value="{{ value }}" {% if field.value==value %}selected{% endif %}>{{ text }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{% url 'enrollments' %}" class="btn btn-outline-light me-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
